@@ -11,6 +11,26 @@ def prepare_img(im, mean):
     return im_data
 
 
+def draw_boxes_zmm(im, bboxes, is_display=False, color=None, caption="Image", wait=True):
+    """
+        boxes: bounding boxes
+    """
+    im=im.copy()
+    for box in bboxes:
+        if color==None:
+            if len(box)==5 or len(box)==9:
+                c=tuple(cm.jet([box[-1]])[0, 2::-1]*255)
+            else:
+                c=tuple(np.random.randint(0, 256, 3))
+        else:
+            c=color
+        cv2.rectangle(im, tuple(box[:2]), tuple(box[2:4]), c)
+    cv2.imwrite(caption,im)
+    if is_display:
+        cv2.imshow(caption, im)
+        if wait:
+            cv2.waitKey(0)
+    return im
 def draw_boxes(im, bboxes, is_display=True, color=None, caption="Image", wait=True):
     """
         boxes: bounding boxes
